@@ -1,758 +1,1997 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penguinismo</title>
+ 
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+ 
+    body {
+      background-color: #0b0b0b;
+      color: white;
+      padding-bottom: 80px;
+    }
+ 
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: #000;
+      border-bottom: 1px solid #222;
+    }
+ 
+    .perfil-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+ 
+    .perfil {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+ 
+    /* ESTILOS DA HOME */
+    .banner {
+      margin: 20px;
+      padding: 50px;
+      border-radius: 20px;
+      background: linear-gradient(to right, #111, #222);
+    }
+ 
+    .banner h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+ 
+    .banner p {
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+ 
+    .banner button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 20px;
+      background: #1e90ff;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+ 
+    .catalogo {
+      padding: 20px;
+    }
+ 
+    .catalogo h2 {
+      margin-bottom: 20px;
+    }
+ 
+    .cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+ 
+    .card {
+      width: 300px;
+      background: #151515;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: 0.3s;
+      border: 1px solid #222;
+    }
+ 
+    .card:hover {
+      transform: scale(1.03);
+    }
+ 
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      cursor: pointer;
+    }
+ 
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #222; /* aparece no lugar da imagem se ela não carregar */
+    }
+ 
+    .card-content {
+      padding: 15px;
+    }
+ 
+    .card h3 {
+      margin-bottom: 10px;
+    }
+ 
+    .card p {
+      color: #aaa;
+      font-size: 14px;
+    }
+ 
+    /* ESTILO REDDIT PARA A ABA MÚSICA */
+    .community-banner {
+      width: 100%;
+      height: 180px;
+      background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+    }
+ 
+    .community-header {
+      padding: 0 40px 20px 40px;
+      background-color: #0e0e0e;
+      border-bottom: 1px solid #222;
+    }
+ 
+    .community-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+      margin-top: -30px;
+    }
+ 
+    .community-title-box {
+      display: flex;
+      align-items: flex-end;
+      gap: 15px;
+    }
+ 
+    .community-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 4px solid #0e0e0e;
+      object-fit: cover;
+      background: #151515;
+    }
+ 
+    .community-title h1 {
+      font-size: 26px;
+      font-weight: bold;
+    }
+ 
+    .community-title p {
+      color: #888;
+      font-size: 14px;
+    }
+ 
+    .community-actions {
+      display: flex;
+      gap: 10px;
+    }
+ 
+    .btn-postar {
+      background: transparent;
+      border: 1px solid #fff;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+ 
+    .btn-postar:hover {
+      background: #222;
+    }
+ 
+    .btn-unirse {
+      background: white;
+      border: none;
+      color: black;
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+ 
+    .feed-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+ 
+    .post-card {
+      background: #151515;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px solid #222;
+    }
+ 
+    .post-header {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+ 
+    .post-header span {
+      color: white;
+      font-weight: bold;
+    }
+ 
+    .post-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+ 
+    .post-content {
+      color: #ccc;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+ 
+    .post-footer {
+      display: flex;
+      gap: 15px;
+      font-size: 13px;
+      color: #888;
+    }
 
-    <meta charset="UTF-8">
+    /* MENSAGEM QUANDO O FÓRUM AINDA NÃO TEM POSTAGENS */
+    .forum-vazio {
+      text-align: center;
+      color: #888;
+      padding: 40px 15px;
+    }
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    .forum-vazio h2 {
+      color: white;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+ 
 
-    <meta
-        name="description"
-        content="Penguinismo — um espaço de acolhimento, conexão e interação."
-    >
+    /* ================= EXPLORAR ================= */
+    .exp-container {
+      max-width: 1060px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 25px;
+      align-items: flex-start;
+    }
 
-    <title>Penguinismo | Um lugar para ser você</title>
+    .exp-principal { flex: 1; min-width: 0; }
 
-    <link rel="stylesheet" href="style.css">
+    .exp-lateral {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
+    .busca {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 30px;
+      padding: 12px 20px;
+    }
+
+    .busca input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 15px;
+    }
+
+    .abas-internas {
+      display: flex;
+      border-bottom: 1px solid #222;
+      margin-top: 10px;
+    }
+
+    .abas-internas button {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #888;
+      padding: 15px 0;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+
+    .abas-internas button.active {
+      color: white;
+      border-bottom-color: #7cc4ff;
+    }
+
+    .painel { display: none; }
+    .painel.active { display: block; }
+
+    .exp-titulo {
+      font-size: 20px;
+      padding: 25px 10px 15px 10px;
+    }
+
+    .trend {
+      padding: 12px 25px;
+      cursor: pointer;
+    }
+
+    .trend:hover { background: #151515; }
+
+    .trend small { color: #888; font-size: 13px; }
+    .trend strong { display: block; font-size: 16px; margin: 3px 0; }
+    .trend span { color: #888; font-size: 13px; }
+
+    .exp-post {
+      border-top: 1px solid #222;
+      padding: 18px 10px;
+    }
+
+    .exp-post-topo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+
+    .exp-post-topo b { color: white; }
+
+    .exp-post h3 { font-size: 17px; margin-bottom: 8px; }
+    .exp-post p { color: #ccc; font-size: 14px; margin-bottom: 8px; }
+    .hashtags { color: #4da3ff; font-size: 13px; }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      border-radius: 50%;
+      background: #444;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .caixa-lateral {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .caixa-lateral h2 {
+      font-size: 19px;
+      padding: 18px;
+      border-bottom: 1px solid #222;
+    }
+
+    .caixa-lateral .trend { padding: 12px 15px; }
+
+    .comunidade-item {
+      padding: 14px 15px;
+      cursor: pointer;
+    }
+
+    .comunidade-item:hover { background: #181818; }
+    .comunidade-item strong { display: block; margin-bottom: 4px; }
+    .comunidade-item span { color: #888; font-size: 13px; }
+
+    .pessoa {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 10px;
+      border-bottom: 1px solid #222;
+    }
+
+    .pessoa div { flex: 1; }
+    .pessoa small { color: #888; }
+
+    .btn-seguir {
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-seguir.seguindo {
+      background: transparent;
+      color: white;
+      border: 1px solid #555;
+    }
+
+    /* ================= BATE-PAPO ================= */
+    .chat-container {
+      max-width: 1100px;
+      height: calc(100vh - 160px);
+      margin: 20px auto;
+      display: flex;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .chat-lista {
+      width: 350px;
+      border-right: 1px solid #222;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-lista-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #222;
+    }
+
+    .chat-lista-topo h2 { font-size: 24px; }
+
+    .btn-redondo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: #7cc4ff;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .chat-lista .busca {
+      margin: 15px;
+      padding: 9px 15px;
+    }
+
+    .chat-lista .busca input { font-size: 13px; }
+
+    #lista-conversas { overflow-y: auto; }
+
+    .conversa {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+      border-bottom: 1px solid #222;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+
+    .conversa:hover { background: #181818; }
+
+    .conversa.active {
+      background: #1c1c1c;
+      border-left-color: #7cc4ff;
+    }
+
+    .conversa-info { flex: 1; min-width: 0; }
+    .conversa-info strong { display: block; margin-bottom: 4px; }
+
+    .conversa-info p {
+      color: #999;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .conversa small { color: #888; font-size: 11px; }
+
+    .chat-janela {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-topo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid #222;
+    }
+
+    .chat-topo small { color: #22c55e; font-size: 12px; }
+
+    .chat-mensagens {
+      flex: 1;
+      overflow-y: auto;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .msg {
+      max-width: 60%;
+      padding: 12px 15px;
+      border-radius: 14px;
+      font-size: 14px;
+      background: #222;
+      align-self: flex-start;
+    }
+
+    .msg.minha {
+      background: #1e90ff;
+      align-self: flex-end;
+    }
+
+    .msg .msg-autor { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+    .msg .msg-hora { font-size: 10px; color: #ccc; margin-top: 8px; }
+
+    .chat-enviar {
+      display: flex;
+      gap: 10px;
+      padding: 15px;
+      border-top: 1px solid #222;
+    }
+
+    .chat-enviar input {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 30px;
+      padding: 12px 18px;
+      color: white;
+      outline: none;
+    }
+
+    .chat-enviar .btn-redondo { width: 46px; height: 46px; }
+
+    /* ================= PERFIL ================= */
+    .perfil-pagina {
+      max-width: 700px;
+      margin: 0 auto;
+      min-height: 100vh;
+      border-left: 1px solid #222;
+      border-right: 1px solid #222;
+    }
+
+    .perfil-capa {
+      height: 200px;
+      background: linear-gradient(135deg, #111 0%, #1c4f80 50%, #1e90ff 100%);
+    }
+
+    .perfil-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 20px;
+    }
+
+    .perfil-foto {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #444;
+      border: 5px solid #0b0b0b;
+      margin-top: -60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      font-weight: bold;
+    }
+
+    .btn-editar {
+      margin-top: 12px;
+      background: transparent;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 20px;
+      padding: 9px 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .perfil-dados { padding: 15px 20px 20px 20px; }
+    .perfil-dados h1 { font-size: 22px; }
+    .perfil-dados .arroba { color: #888; margin-bottom: 15px; }
+    .perfil-dados .bio { margin-bottom: 12px; }
+    .perfil-dados .entrou { color: #888; font-size: 14px; margin-bottom: 12px; }
+    .perfil-dados .numeros span { color: #888; margin-right: 18px; }
+    .perfil-dados .numeros b { color: white; }
+
+    .perfil-post {
+      display: flex;
+      gap: 12px;
+      padding: 18px 20px;
+      border-bottom: 1px solid #222;
+    }
+
+    .perfil-post-corpo { flex: 1; }
+    .perfil-post-corpo .topo { color: #888; font-size: 14px; margin-bottom: 6px; }
+    .perfil-post-corpo .topo b { color: white; }
+    .perfil-post-corpo p { line-height: 1.5; margin-bottom: 12px; }
+
+    .acoes { display: flex; gap: 25px; }
+
+    .acoes button {
+      background: none;
+      border: none;
+      color: #888;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .acoes button.curtido { color: #f91880; }
+
+
+    /* ================= JANELA DE NOVA POSTAGEM ================= */
+    .modal-fundo {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-fundo.aberto { display: flex; }
+
+    .modal {
+      width: 100%;
+      max-width: 560px;
+      background: #151515;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal h2 { font-size: 20px; }
+    .modal small { color: #888; }
+
+    .modal input, .modal textarea {
+      background: #0e0e0e;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 12px;
+      color: white;
+      font-size: 15px;
+      outline: none;
+      resize: vertical;
+    }
+
+    .modal input:focus, .modal textarea:focus { border-color: #1e90ff; }
+
+    .modal-erro { color: #ef4444; font-size: 14px; display: none; }
+
+    .modal-botoes {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-publicar {
+      background: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 9px 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-publicar:disabled { opacity: 0.5; cursor: wait; }
+
+    /* REGRAS DAS ABAS */
+    .aba-conteudo {
+      display: none;
+    }
+ 
+    .aba-conteudo.active {
+      display: block !important;
+    }
+ 
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #000;
+      display: flex;
+      justify-content: space-around;
+      padding: 15px;
+      z-index: 100;
+      border-top: 1px solid #222;
+    }
+ 
+    footer button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+ 
+    footer button.active {
+      color: #7cc4ff;
+      font-weight: bold;
+    }
+  </style>
 </head>
-
-
 <body>
-
-
-<!-- ================= HEADER ================= -->
-
-<header class="header">
-
-    <a href="#inicio" class="logo">
-
-        <span class="logo-ponto"></span>
-
-        Penguinismo
-
-    </a>
-
-
-    <nav class="menu">
-
-        <a href="#sobre">
-            Sobre
-        </a>
-
-        <a href="#recursos">
-            Recursos
-        </a>
-
-        <a href="#comunidade">
-            Comunidade
-        </a>
-
-    </nav>
-
-
-    <button
-        class="menu-mobile"
-        id="menuMobile"
-        aria-label="Abrir menu"
-    >
-        ☰
+ 
+  <header>
+    <div style="font-weight: bold; color: #7cc4ff; font-size: 20px;">Penguinismo</div>
+    <button class="perfil-btn" onclick="mudarAba('aba-perfil')">
+      <div class="perfil">P</div>
     </button>
-
-</header>
-
-
-
-<!-- ================= CONTEÚDO ================= -->
-
-<main>
-
-
-    <!-- ================= HERO ================= -->
-
-    <section
-        class="hero"
-        id="inicio"
-    >
-
-        <div class="hero-text">
-
-            <span class="tag">
-                UM ESPAÇO DE ACOLHIMENTO
-            </span>
-
-
-            <h1>
-
-                Um lugar para
-
-                <span>
-                    ser você.
-                </span>
-
-            </h1>
-
-
-            <p>
-
-                O Penguinismo é um espaço digital criado
-                para promover acolhimento, interação,
-                informação e conexão entre pessoas autistas,
-                familiares e pessoas da rede de apoio.
-
-            </p>
-
-
-            <div class="botoes">
-
-
-                <!-- BOTÃO NOSSA HISTÓRIA -->
-
-                <a
-                    href="#historia"
-                    class="botao principal"
-                    id="botaoHistoria"
-                >
-                    Conheça nossa história
-                </a>
-
-
-                <a
-                    href="#comunidade"
-                    class="botao secundario"
-                >
-                    Fazer parte
-                </a>
-
-
-            </div>
-
-        </div>
-
-
-
-        <!-- ================= PINGUIM HERO ================= -->
-
-        <div class="hero-imagem">
-
-            <div class="brilho"></div>
-
-
-            <img
-                src="pinguim.png"
-                alt="Mascote do Penguinismo"
-            >
-
-        </div>
-
+  </header>
+ 
+  <!-- ================= ABA 1: HOME (COM TODOS OS CARDS) ================= -->
+  <main id="aba-home" class="aba-conteudo active">
+    <section class="banner">
+      <h1>Bem-vindo</h1>
+      <p>Explore os fóruns de discussões e compartilhe experiências.</p>
+      <button onclick="alert('Bem-vindo ao Penguinismo!')">Descobrir mais</button>
     </section>
+   
+    <section class="catalogo">
+      <h2>Catálogo de Fóruns</h2>
+      <div class="cards">
 
-
-
-    <!-- ================= NOSSA HISTÓRIA ================= -->
-
-    <section
-        class="historia"
-        id="historia"
-    >
-
-
-        <div class="historia-conteudo">
-
-
-            <div class="historia-titulo">
-
-                <span class="tag">
-                    NOSSA HISTÓRIA
-                </span>
-
-
-                <h2>
-
-                    Conheça o
-
-                    <span>
-                        Penguinismo.
-                    </span>
-
-                </h2>
-
+        <!-- Todos os cards (menos Música) chamam abrirForum(this),
+             que monta a página do fórum a partir do título, descrição e imagem do card. -->
+   
+        <!-- CARD 1 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="https://uploads.jovemnerd.com.br/wp-content/uploads/2023/10/fnaf_easter_eggs_capa__6cmzyjnrl.jpg" alt="Jogos de Terror">
+            <div class="card-content">
+              <h3>Jogos de Terror</h3>
+              <p>Explore teorias, lore e mistérios.</p>
             </div>
-
-
-
-            <div class="historia-texto">
-
-                <p>
-
-                    O <strong>Penguinismo</strong> nasceu com o
-                    propósito de criar um espaço digital mais
-                    acolhedor, acessível e seguro para pessoas
-                    neurodivergentes.
-
-                    A plataforma busca unir
-                    <strong>interação, entretenimento,
-                    informação e suporte</strong>, permitindo que
-                    usuários encontrem comunidades, compartilhem
-                    interesses, experiências e conhecimentos.
-
-                    Além disso, o projeto valoriza a acessibilidade
-                    e a segurança digital, utilizando recursos de
-                    moderação para tornar as interações mais
-                    respeitosas e inclusivas.
-
-                </p>
-
+          </div>
+        </a>
+   
+        <!-- CARD 2 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="https://i.pinimg.com/474x/f2/1f/e8/f21fe8883afa9c320ab1677dd4614f76.jpg" alt="Sonic">
+            <div class="card-content">
+              <h3>Sonic</h3>
+              <p>Velocidade, jogos e personagens clássicos.</p>
             </div>
-
-        </div>
-
-
-
-        <!-- ================= PILARES ================= -->
-
-        <div class="historia-destaques">
-
-
-            <div class="historia-item">
-
-                <strong>
-                    01
-                </strong>
-
-
-                <h3>
-                    Inclusão
-                </h3>
-
-
-                <p>
-
-                    Um espaço pensado para diferentes
-                    formas de interação e comunicação.
-
-                </p>
-
+          </div>
+        </a>
+ 
+        <!-- CARD 3 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="https://m.media-amazon.com/images/S/pv-target-images/7415dbb66cb1dae50df753a32754244643437e94c1a5519f0cd16e0713fb3800.jpg" alt="Desenhos">
+            <div class="card-content">
+              <h3>Desenhos</h3>
+              <p>Fórum para debater e descobrir desenhos.</p>
             </div>
-
-
-
-            <div class="historia-item">
-
-                <strong>
-                    02
-                </strong>
-
-
-                <h3>
-                    Conexão
-                </h3>
-
-
-                <p>
-
-                    Comunidades para aproximar pessoas
-                    com interesses em comum.
-
-                </p>
-
+          </div>
+        </a>
+ 
+        <!-- CARD 4 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="https://www.ufsm.br/app/uploads/2026/03/arte.jpg" alt="Dinossauros">
+            <div class="card-content">
+              <h3>Dinossauros</h3>
+              <p>Espécies, categorias e tudo sobre Paleontologia.</p>
             </div>
-
-
-
-            <div class="historia-item">
-
-                <strong>
-                    03
-                </strong>
-
-
-                <h3>
-                    Segurança
-                </h3>
-
-
-                <p>
-
-                    Recursos de moderação para incentivar
-                    interações mais respeitosas.
-
-                </p>
-
+          </div>
+        </a>
+ 
+        <!-- CARD 5 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoNTPLK33c0_rdhaL07Ia5zTm8avwX0hJuZbGPrqWs0pRz5ZZ7sFbdVnZb&s=10" alt="Busologia">
+            <div class="card-content">
+              <h3>Busologia</h3>
+              <p>Velocidade, modelos, motores e tudo relacionado a ônibus.</p>
             </div>
-
-
-
-            <div class="historia-item">
-
-                <strong>
-                    04
-                </strong>
-
-
-                <h3>
-                    Acessibilidade
-                </h3>
-
-
-                <p>
-
-                    Uma experiência digital pensada para
-                    diferentes necessidades.
-
-                </p>
-
+          </div>
+        </a>
+ 
+        <!-- CARD 6 (MÚSICA - REDIRECIONA PARA A ABA MÚSICA) -->
+        <a class="card-link" onclick="mudarAba('aba-musica')">
+          <div class="card">
+            <img src="https://thumbs.dreamstime.com/b/gatinho-e-cachorro-ouvem-m%C3%BAsica-nos-fones-de-ouvido-pequeno-c%C3%A3o-ouve-canta-em-fundo-branco-isolando-focinho-conceito-dispositivo-211803171.jpg" alt="Música">
+            <div class="card-content">
+              <h3>Música</h3>
+              <p>Todos os gêneros, cantores, letras e instrumentos do seu gosto.</p>
             </div>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- ================= FRASE ================= -->
-
-    <section class="frase">
-
-        <span>
-            ✦ Acolhimento
-        </span>
-
-        <span>
-            ✦ Respeito
-        </span>
-
-        <span>
-            ✦ Inclusão
-        </span>
-
-        <span>
-            ✦ Conexão
-        </span>
-
-    </section>
-
-
-
-    <!-- ================= SOBRE ================= -->
-
-    <section
-        class="secao"
-        id="sobre"
-    >
-
-
-        <div class="titulo-secao">
-
-
-            <span class="tag">
-                SOBRE O PROJETO
-            </span>
-
-
-            <h2>
-
-                Uma comunidade feita para
-
-                <span>
-                    conectar.
-                </span>
-
-            </h2>
-
-
-            <p>
-
-                O Penguinismo nasceu da ideia de criar
-                um ambiente digital mais acolhedor,
-                acessível e respeitoso.
-
-            </p>
-
-        </div>
-
-
-
-        <div class="cards">
-
-
-            <article class="card">
-
-
-                <div class="icone">
-                    ♡
-                </div>
-
-
-                <h3>
-                    Acolhimento
-                </h3>
-
-
-                <p>
-
-                    Um espaço onde diferentes experiências
-                    podem ser compartilhadas com respeito.
-
-                </p>
-
-            </article>
-
-
-
-            <article class="card">
-
-
-                <div class="icone">
-                    ◌
-                </div>
-
-
-                <h3>
-                    Interação
-                </h3>
-
-
-                <p>
-
-                    Conecte-se com pessoas e encontre
-                    novas possibilidades de interação.
-
-                </p>
-
-            </article>
-
-
-
-            <article class="card">
-
-
-                <div class="icone">
-                    ✓
-                </div>
-
-
-                <h3>
-                    Informação
-                </h3>
-
-
-                <p>
-
-                    Conteúdos e informações pensados para
-                    ajudar a comunidade e sua rede de apoio.
-
-                </p>
-
-            </article>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- ================= COMUNIDADE ================= -->
-
-    <section
-        class="comunidade"
-        id="comunidade"
-    >
-
-
-        <div class="comunidade-text">
-
-
-            <span class="tag">
-                NOSSO PROPÓSITO
-            </span>
-
-
-            <h2>
-
-                Mais compreensão.
-
-                <br>
-
-                Mais conexão.
-
-            </h2>
-
-
-            <p>
-
-                Queremos construir uma comunidade em que
-                cada pessoa possa encontrar informação,
-                interação e acolhimento.
-
-            </p>
-
-
-            <a
-                href="#"
-                class="botao principal"
-                id="botaoComunidade"
-            >
-                Entrar na comunidade
-            </a>
-
-
-        </div>
-
-
-
-        <div class="mensagem">
-
-
-            <span class="aspas">
-                “
-            </span>
-
-
-            <p>
-
-                Um espaço acolhedor começa quando
-                cada pessoa é respeitada.
-
-            </p>
-
-
-            <small>
-                — Penguinismo
-            </small>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- ================= RECURSOS ================= -->
-
-    <section
-        class="secao"
-        id="recursos"
-    >
-
-
-        <div class="titulo-secao">
-
-
-            <span class="tag">
-                O QUE ESTAMOS CONSTRUINDO
-            </span>
-
-
-            <h2>
-
-                Pensado para
-
-                <span>
-                    você.
-                </span>
-
-            </h2>
-
-        </div>
-
-
-
-        <div class="lista-recursos">
-
-
-            <div class="recurso">
-
-                <strong>
-                    01
-                </strong>
-
-                <span>
-                    Perfis e interesses
-                </span>
-
-            </div>
-
-
-
-            <div class="recurso">
-
-                <strong>
-                    02
-                </strong>
-
-                <span>
-                    Comunidades e grupos
-                </span>
-
-            </div>
-
-
-
-            <div class="recurso">
-
-                <strong>
-                    03
-                </strong>
-
-                <span>
-                    Conteúdos acessíveis
-                </span>
-
-            </div>
-
-
-
-            <div class="recurso">
-
-                <strong>
-                    04
-                </strong>
-
-                <span>
-                    Espaço de conversa
-                </span>
-
-            </div>
-
-
-
-            <div class="recurso">
-
-                <strong>
-                    05
-                </strong>
-
-                <span>
-                    Moderação e segurança
-                </span>
-
-            </div>
-
-
-
-            <div class="recurso">
-
-                <strong>
-                    06
-                </strong>
-
-                <span>
-                    Recursos de acessibilidade
-                </span>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- ================= CTA FINAL ================= -->
-
-    <section class="cta">
-
-
-        <div class="cta-pinguim">
-
-
-            <img
-                id="pinguimSemFundo"
-                src="pinguim.png"
-                alt="Mascote do Penguinismo"
-            >
-
-
-        </div>
-
-
-
-        <div class="cta-text">
-
-
-            <span class="tag">
-                FAÇA PARTE
-            </span>
-
-
-            <h2>
-
-                Tem espaço para você aqui.
-
-            </h2>
-
-
-            <p>
-
-                O Penguinismo está sendo construído
-                para criar novas formas de conexão,
-                informação e acolhimento.
-
-            </p>
-
-        </div>
-
-    </section>
-
-
-</main>
-
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-
-    <div class="footer-logo">
-
-
-        <strong>
-            Penguinismo
-        </strong>
-
-
-        <span>
-            Um lugar para ser você.
-        </span>
-
-
-    </div>
-
-
-
-    <div class="footer-links">
-
-
-        <a href="#inicio">
-            Voltar ao topo ↑
+          </div>
         </a>
 
+        <!-- CARD 7 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/biologiamarinha.jpg" alt="Biologia Marinha">
+            <div class="card-content">
+              <h3>Biologia Marinha</h3>
+              <p>Oceanos, animais marinhos e vida submarina.</p>
+            </div>
+          </div>
+        </a>
 
+        <!-- CARD 8 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/images%20%281%29.jpg" alt="Analog Horror">
+            <div class="card-content">
+              <h3>Analog Horror</h3>
+              <p>Fitas VHS, transmissões perdidas e terror analógico.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 9 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/culturapop.jpg" alt="Cultura Pop">
+            <div class="card-content">
+              <h3>Cultura Pop</h3>
+              <p>Filmes, séries, celebridades e tendências.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 10 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/992d8ebe11a8291a8289f83c0e8ede8d.jpg" alt="Cultura Geek">
+            <div class="card-content">
+              <h3>Cultura Geek</h3>
+              <p>Quadrinhos, RPG, games, animes e universos fantásticos.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 11 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/Imagem-referindo-a-qual-o-melhor-sistema-antifurto-para-carros-representada-por-um-escudo-iluminado-simbolo-da-seguranca-veicula.webp" alt="Tecnologia e Mecânica">
+            <div class="card-content">
+              <h3>Tecnologia e Mecânica</h3>
+              <p>Computadores, eletrônica, motores e engenharia.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 12 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/o-que-e-humanismo-contexto-historico-influencias-e-caracteristicas.png" alt="Humanas e Registros Históricos">
+            <div class="card-content">
+              <h3>Humanas e Registros Históricos</h3>
+              <p>História, filosofia, sociologia e documentos do passado.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 13 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/a-noite-estrelada-van-gogh.webp" alt="Artes">
+            <div class="card-content">
+              <h3>Artes</h3>
+              <p>Pintura, literatura, línguas e expressão criativa.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 14 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/M%C3%ADdia%20%281%29.jpg" alt="Idiomas e Cultura">
+            <div class="card-content">
+              <h3>Idiomas e Cultura</h3>
+              <p>Tradições, costumes, línguas estrangeiras e culturas do mundo.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 15 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/culinaria.jpg" alt="Culinária">
+            <div class="card-content">
+              <h3>Culinária</h3>
+              <p>Receitas, dicas de cozinha e diversas comidas.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 16 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/matematica.jpg" alt="Números e Matemática">
+            <div class="card-content">
+              <h3>Números &amp; Matemática</h3>
+              <p>Curiosidades, padrões, cálculos, lógica e tudo sobre números.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 17 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/colecionaveis.jpg" alt="Colecionáveis">
+            <div class="card-content">
+              <h3>Colecionáveis</h3>
+              <p>Compartilhe coleções, itens raros, miniaturas e descobertas.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 18 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/astronomia.jpg" alt="Astronomia">
+            <div class="card-content">
+              <h3>Astronomia</h3>
+              <p>Planetas, estrelas, galáxias, espaço e os mistérios do universo.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 19 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/carros.jpg" alt="Carros">
+            <div class="card-content">
+              <h3>Carros</h3>
+              <p>Modelos, motores, história, modificações e curiosidades automotivas.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 20 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/lojas.jpg" alt="Lojas e Supermercados">
+            <div class="card-content">
+              <h3>Lojas &amp; Supermercados</h3>
+              <p>Marcas, produtos, embalagens, lojas antigas e curiosidades.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 21 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/animais.jpg" alt="Animais">
+            <div class="card-content">
+              <h3>Animais</h3>
+              <p>Cães, gatos, animais selvagens, espécies e curiosidades.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 22 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/minions.jpg" alt="Minions">
+            <div class="card-content">
+              <h3>Minions</h3>
+              <p>Memes, filmes e tudo sobre os amarelinhos mais famosos.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 23 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/futebol.jpg" alt="Futebol">
+            <div class="card-content">
+              <h3>Futebol</h3>
+              <p>Times, campeonatos, jogadores e resenha de jogo.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 24 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/jogosdiversos.webp" alt="Jogos Diversos">
+            <div class="card-content">
+              <h3>Jogos Diversos</h3>
+              <p>Todo tipo de game: lançamentos, dicas e recomendações.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 25 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/indiegames.jpg" alt="Jogos Indie">
+            <div class="card-content">
+              <h3>Jogos Indie</h3>
+              <p>Joias escondidas e jogos de estúdios independentes.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 26 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/Minecraft-Wall.jpg" alt="Minecraft">
+            <div class="card-content">
+              <h3>Minecraft</h3>
+              <p>Construções, mods, servidores e sobrevivência.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 27 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/aviao.jpg" alt="Aviação">
+            <div class="card-content">
+              <h3>Aviação</h3>
+              <p>Aviões, aeroportos, companhias aéreas e spotting.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 28 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/kpop.webp" alt="K-pop">
+            <div class="card-content">
+              <h3>K-pop</h3>
+              <p>Grupos, comebacks, coreografias e fandoms.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 29 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/dorama.webp" alt="Doramas">
+            <div class="card-content">
+              <h3>Doramas</h3>
+              <p>Séries coreanas, asiáticas e recomendações.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 30 -->
+        <a class="card-link" onclick="abrirForum(this)">
+          <div class="card">
+            <img src="img/roblox.jpg" alt="Roblox">
+            <div class="card-content">
+              <h3>Roblox</h3>
+              <p>Jogos, criações, avatares e experiências no Roblox.</p>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+  </main>
+ 
+  <!-- ================= ABA 2: MÚSICA (ESTILO REDDIT) ================= -->
+  <main id="aba-musica" class="aba-conteudo">
+    <div class="community-banner"></div>
+ 
+    <div class="community-header">
+      <div class="community-info">
+        <div class="community-title-box">
+          <img class="community-icon" src="https://thumbs.dreamstime.com/b/gatinho-e-cachorro-ouvem-m%C3%BAsica-nos-fones-de-ouvido-pequeno-c%C3%A3o-ouve-canta-em-fundo-branco-isolando-focinho-conceito-dispositivo-211803171.jpg" alt="Ícone Música">
+          <div class="community-title">
+            <h1>r/Musica</h1>
+            <p>p/musica • 12.4k membros</p>
+          </div>
+        </div>
+ 
+        <div class="community-actions">
+          <button class="btn-postar" onclick="alert('Criar nova postagem')">+ Postar</button>
+          <button class="btn-unirse" onclick="alert('Você entrou na comunidade!')">Unir-se</button>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="feed-container">
+      <div class="post-card">
+        <div class="post-header"><span>u/PenguinFan</span> • há 2 horas</div>
+        <h2 class="post-title">Qual é o melhor álbum de rock dos anos 90?</h2>
+        <p class="post-content">Estava escutando Nevermind e OK Computer hoje. Qual o preferido de vocês?</p>
+        <div class="post-footer">
+          <span>💬 42 Comentários</span>
+          <span>⬆ 128 Votos</span>
+        </div>
+      </div>
+    </div>
+ 
+ 
+     <div class="feed-container">
+      <div class="post-card">
+        <div class="post-header"><span>u/NikkiSixxFan</span> • há 1 dia</div>
+        <h2 class="post-title">O que vocês acham sobre a polêmica dos policiais disfarçados e o Nikki Sixx em 80?</h2>
+        <p class="post-content">Estava revendo algumas das maiores polêmicas dele e fiquei em duvida dessa. Por que ele foi preso se estava ajudando as garotas? Os policiais receberam punição?</p>
+        <div class="post-footer">
+          <span>💬 56 Comentários</span>
+          <span>⬆ 200 Votos</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= ABA 3: FÓRUM GENÉRICO (PREENCHIDO PELO JAVASCRIPT) ================= -->
+  <main id="aba-forum" class="aba-conteudo">
+    <div class="community-banner" id="forum-banner"></div>
+
+    <div class="community-header">
+      <div class="community-info">
+        <div class="community-title-box">
+          <img class="community-icon" id="forum-icone" src="" alt="">
+          <div class="community-title">
+            <h1 id="forum-titulo">r/Forum</h1>
+            <p id="forum-descricao"></p>
+          </div>
+        </div>
+
+        <div class="community-actions">
+          <button class="btn-postar" onclick="voltarHome()">← Voltar</button>
+          <button class="btn-postar" onclick="abrirFormPost()">+ Postar</button>
+          <button class="btn-unirse" onclick="alert('Você entrou na comunidade!')">Unir-se</button>
+        </div>
+      </div>
     </div>
 
+    <!-- Os posts são colocados aqui pelo JavaScript (objeto postsPorForum) -->
+    <div class="feed-container" id="forum-posts"></div>
+  </main>
+ 
+  <!-- ================= ABA EXPLORAR ================= -->
+  <main id="aba-explorar" class="aba-conteudo">
+    <div class="exp-container">
 
+      <div class="exp-principal">
+        <div class="busca">
+          <span>🔎</span>
+          <input type="text" id="busca-explorar" placeholder="Pesquisar no Penguinismo" oninput="pesquisarExplorar(this.value)">
+        </div>
 
-    <p>
+        <div class="abas-internas" id="abas-explorar">
+          <button class="active" onclick="trocarPainel('explorar', 'painel-para-voce', this)">Para você</button>
+          <button onclick="trocarPainel('explorar', 'painel-em-alta', this)">Em alta</button>
+          <button onclick="trocarPainel('explorar', 'painel-pessoas', this)">Pessoas</button>
+        </div>
 
-        © 2026 Penguinismo.
-        Um projeto de acolhimento e inclusão.
+        <!-- PAINEL: PARA VOCÊ -->
+        <div class="painel active" id="painel-para-voce">
+          <h2 class="exp-titulo">O que está acontecendo</h2>
 
-    </p>
+          <div class="trend" onclick="abrirForumPorNome('Jogos de Terror')">
+            <small>Jogos de Terror · Em alta</small>
+            <strong>#FNAF</strong>
+            <span>3.482 publicações</span>
+          </div>
+          <div class="trend" onclick="mudarAba('aba-musica')">
+            <small>Música · Em alta</small>
+            <strong>Rock dos anos 90</strong>
+            <span>1.924 publicações</span>
+          </div>
+          <div class="trend" onclick="abrirForumPorNome('Dinossauros')">
+            <small>Dinossauros · Em alta</small>
+            <strong>T-Rex</strong>
+            <span>1.205 publicações</span>
+          </div>
+          <div class="trend" onclick="abrirForumPorNome('Sonic')">
+            <small>Sonic · Em alta</small>
+            <strong>Sonic 3</strong>
+            <span>847 publicações</span>
+          </div>
 
+          <div class="exp-post">
+            <div class="exp-post-topo"><div class="avatar">F</div><b>u/FoxyFan</b> • há 3 horas</div>
+            <h3>Qual jogo de terror tem a melhor lore?</h3>
+            <p>Estou procurando jogos com histórias cheias de mistérios e teorias para tentar descobrir.</p>
+            <div class="hashtags">#JogosDeTerror #FNAF #Horror</div>
+          </div>
 
-</footer>
+          <div class="exp-post">
+            <div class="exp-post-topo"><div class="avatar">P</div><b>u/PenguinFan</b> • há 2 horas</div>
+            <h3>Qual é o melhor álbum de rock dos anos 90?</h3>
+            <p>Estava escutando Nevermind e OK Computer hoje. Qual o preferido de vocês?</p>
+            <div class="hashtags">#Musica #Rock #Anos90</div>
+          </div>
 
+          <div class="exp-post">
+            <div class="exp-post-topo"><div class="avatar">R</div><b>u/RaptorLover</b> • há 5 horas</div>
+            <h3>T-Rex ou Espinossauro: quem era maior?</h3>
+            <p>Vejo muita discussão sobre isso. O que os estudos mais recentes dizem?</p>
+            <div class="hashtags">#Dinossauros #TRex #Paleontologia</div>
+          </div>
+        </div>
 
+        <!-- PAINEL: EM ALTA -->
+        <div class="painel" id="painel-em-alta">
+          <h2 class="exp-titulo">Mais comentados hoje</h2>
 
-<script src="script.js"></script>
+          <div class="exp-post">
+            <div class="exp-post-topo"><div class="avatar">C</div><b>u/CinefiloBR</b> • há 2 dias</div>
+            <h3>Filme que todo mundo ama mas você não gostou</h3>
+            <p>Pode falar sem medo, aqui ninguém julga (muito).</p>
+            <div class="hashtags">#CulturaPop #Filmes</div>
+          </div>
 
+          <div class="exp-post">
+            <div class="exp-post-topo"><div class="avatar">G</div><b>u/GatoPreto</b> • há 2 horas</div>
+            <h3>Por que gatos derrubam coisas da mesa?</h3>
+            <p>O meu olha pra mim e empurra o copo devagar. Alguém tem uma explicação?</p>
+            <div class="hashtags">#Animais #Gatos</div>
+          </div>
 
+          <div class="exp-post">
+            <div class="exp-post-topo"><div class="avatar">P</div><b>u/Pitagoras</b> • há 5 horas</div>
+            <h3>0,999... é igual a 1?</h3>
+            <p>Meu professor disse que sim e eu não consigo aceitar. Alguém explica de um jeito simples?</p>
+            <div class="hashtags">#Matematica #Logica</div>
+          </div>
+        </div>
+
+        <!-- PAINEL: PESSOAS -->
+        <div class="painel" id="painel-pessoas">
+          <div class="pessoa">
+            <div class="avatar">F</div>
+            <div><strong>FoxyFan</strong><br><small>Teorias de FNAF todo dia</small></div>
+            <button class="btn-seguir" onclick="seguir(this)">Seguir</button>
+          </div>
+          <div class="pessoa">
+            <div class="avatar">R</div>
+            <div><strong>RaptorLover</strong><br><small>Paleontologia amadora 🦖</small></div>
+            <button class="btn-seguir" onclick="seguir(this)">Seguir</button>
+          </div>
+          <div class="pessoa">
+            <div class="avatar">S</div>
+            <div><strong>SpeedFan</strong><br><small>Gotta go fast</small></div>
+            <button class="btn-seguir" onclick="seguir(this)">Seguir</button>
+          </div>
+          <div class="pessoa">
+            <div class="avatar">B</div>
+            <div><strong>BusaoFan</strong><br><small>Fotografo ônibus desde 2015</small></div>
+            <button class="btn-seguir" onclick="seguir(this)">Seguir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUNA LATERAL -->
+      <aside class="exp-lateral">
+        <div class="caixa-lateral">
+          <h2>O que está acontecendo</h2>
+          <div class="trend" onclick="abrirForumPorNome('Jogos de Terror')">
+            <small>Jogos de Terror · Em alta</small>
+            <strong>#FNAF</strong>
+            <span>3.482 publicações</span>
+          </div>
+          <div class="trend" onclick="mudarAba('aba-musica')">
+            <small>Música · Em alta</small>
+            <strong>Rock dos anos 90</strong>
+            <span>1.924 publicações</span>
+          </div>
+          <div class="trend" onclick="abrirForumPorNome('Dinossauros')">
+            <small>Dinossauros · Em alta</small>
+            <strong>T-Rex</strong>
+            <span>1.205 publicações</span>
+          </div>
+          <div class="trend" onclick="abrirForumPorNome('Sonic')">
+            <small>Sonic · Em alta</small>
+            <strong>Sonic 3</strong>
+            <span>847 publicações</span>
+          </div>
+        </div>
+
+        <div class="caixa-lateral">
+          <h2>Comunidades populares</h2>
+          <div class="comunidade-item" onclick="abrirForumPorNome('Jogos de Terror')">
+            <strong>r/JogosDeTerror</strong><span>21.3k membros</span>
+          </div>
+          <div class="comunidade-item" onclick="abrirForumPorNome('Sonic')">
+            <strong>r/Sonic</strong><span>18.6k membros</span>
+          </div>
+          <div class="comunidade-item" onclick="abrirForumPorNome('Dinossauros')">
+            <strong>r/Dinossauros</strong><span>15.2k membros</span>
+          </div>
+          <div class="comunidade-item" onclick="mudarAba('aba-musica')">
+            <strong>r/Musica</strong><span>12.4k membros</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ================= ABA BATE-PAPO ================= -->
+  <main id="aba-batepapo" class="aba-conteudo">
+    <div class="chat-container">
+
+      <div class="chat-lista">
+        <div class="chat-lista-topo">
+          <h2>Bate-papo</h2>
+          <button class="btn-redondo" title="Nova conversa" onclick="novaConversa()">✏️</button>
+        </div>
+
+        <div class="busca">
+          <span>🔎</span>
+          <input type="text" placeholder="Pesquisar conversas..." oninput="filtrarConversas(this.value)">
+        </div>
+
+        <!-- Preenchido pelo JavaScript -->
+        <div id="lista-conversas"></div>
+      </div>
+
+      <div class="chat-janela">
+        <div class="chat-topo">
+          <div class="avatar" id="chat-avatar">F</div>
+          <div>
+            <strong id="chat-nome">FoxyFan</strong><br>
+            <small>online</small>
+          </div>
+        </div>
+
+        <!-- Preenchido pelo JavaScript -->
+        <div class="chat-mensagens" id="chat-mensagens"></div>
+
+        <div class="chat-enviar">
+          <input type="text" id="campo-mensagem" placeholder="Enviar mensagem..." onkeydown="if (event.key === 'Enter') enviarMensagem()">
+          <button class="btn-redondo" onclick="enviarMensagem()">➤</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= ABA PERFIL ================= -->
+  <main id="aba-perfil" class="aba-conteudo">
+    <div class="perfil-pagina">
+      <div class="perfil-capa"></div>
+
+      <div class="perfil-topo">
+        <div class="perfil-foto">P</div>
+        <button class="btn-editar" onclick="editarPerfil()">Editar perfil</button>
+      </div>
+
+      <div class="perfil-dados">
+        <h1>Penguin</h1>
+        <p class="arroba">@penguin</p>
+        <p class="bio" id="perfil-bio">17y Amante de terror e Creepypasta!!</p>
+        <p class="entrou">📅 Entrou no Penguinismo em setembro de 2026</p>
+        <p class="numeros"><span><b>23</b> seguindo</span><span><b id="num-seguidores">48</b> seguidores</span></p>
+      </div>
+
+      <div class="abas-internas">
+        <button class="active" onclick="trocarPainel('perfil', 'painel-publicacoes', this)">Publicações</button>
+        <button onclick="trocarPainel('perfil', 'painel-respostas', this)">Respostas</button>
+      </div>
+
+      <!-- PUBLICAÇÕES -->
+      <div class="painel active" id="painel-publicacoes">
+        <div class="perfil-post">
+          <div class="avatar">P</div>
+          <div class="perfil-post-corpo">
+            <div class="topo"><b>Penguin</b> @penguin · 2h</div>
+            <p>Qual jogo de FNAF vocês acham mais assustador? Eu ainda acho que os primeiros tinham uma atmosfera muito mais sinistra KKKKKKK.</p>
+            <div class="acoes">
+              <button onclick="curtir(this)">♡ <span>12</span></button>
+              <button>💬 4</button>
+              <button onclick="alert('Link copiado!')">↗</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="perfil-post">
+          <div class="avatar">P</div>
+          <div class="perfil-post-corpo">
+            <div class="topo"><b>Penguin</b> @penguin · 5h</div>
+            <p>Qual música do My Chemical Romance vocês mais gostam? Quero descobrir umas músicas que ainda não conheço.</p>
+            <div class="acoes">
+              <button onclick="curtir(this)">♡ <span>8</span></button>
+              <button>💬 6</button>
+              <button onclick="alert('Link copiado!')">↗</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="perfil-post">
+          <div class="avatar">P</div>
+          <div class="perfil-post-corpo">
+            <div class="topo"><b>Penguin</b> @penguin · 1d</div>
+            <p>Alguém tem recomendação de creepypasta pouco conhecida? Já li todas as clássicas.</p>
+            <div class="acoes">
+              <button onclick="curtir(this)">♡ <span>15</span></button>
+              <button>💬 9</button>
+              <button onclick="alert('Link copiado!')">↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESPOSTAS -->
+      <div class="painel" id="painel-respostas">
+        <div class="perfil-post">
+          <div class="avatar">P</div>
+          <div class="perfil-post-corpo">
+            <div class="topo"><b>Penguin</b> @penguin · 3h · respondendo a <b>u/FoxyFan</b></div>
+            <p>Concordo demais, a lore de FNAF é a melhor coisa do jogo.</p>
+            <div class="acoes">
+              <button onclick="curtir(this)">♡ <span>3</span></button>
+              <button>💬 1</button>
+              <button onclick="alert('Link copiado!')">↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= JANELA DE NOVA POSTAGEM ================= -->
+  <div class="modal-fundo" id="modal-post" onclick="if (event.target === this) fecharFormPost()">
+    <div class="modal">
+      <h2 id="modal-titulo">Nova postagem</h2>
+      <small id="modal-autor"></small>
+      <input type="text" id="post-titulo" placeholder="Título" maxlength="100">
+      <textarea id="post-conteudo" rows="5" placeholder="Escreva sua postagem..."></textarea>
+      <div class="modal-erro" id="modal-erro"></div>
+      <div class="modal-botoes">
+        <button class="btn-postar" onclick="fecharFormPost()">Cancelar</button>
+        <button class="btn-publicar" id="btn-publicar" onclick="publicarPost()">Publicar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ FIXO -->
+  <footer>
+    <button class="btn-aba active" data-aba="aba-home" onclick="mudarAba('aba-home')">🏠 Home</button>
+    <button class="btn-aba" data-aba="aba-explorar" onclick="mudarAba('aba-explorar')">🔎 Explorar</button>
+    <button class="btn-aba" data-aba="aba-batepapo" onclick="mudarAba('aba-batepapo')">💬 Bate-papo</button>
+    <button class="btn-aba" data-aba="aba-perfil" onclick="mudarAba('aba-perfil')">👤 Perfil</button>
+  </footer>
+ 
+  <script>
+    function mudarAba(idAba) {
+      const abaAtiva = document.getElementById(idAba);
+
+      // Se a aba não existir, não esconde nada (antes isso deixava a tela preta)
+      if (!abaAtiva) {
+        console.warn('A aba "' + idAba + '" não existe.');
+        return;
+      }
+
+      document.querySelectorAll('.aba-conteudo').forEach(aba => aba.classList.remove('active'));
+      abaAtiva.classList.add('active');
+
+      // Acende no rodapé o botão que corresponde à aba (se existir)
+      document.querySelectorAll('.btn-aba').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.aba === idAba);
+      });
+
+      window.scrollTo(0, 0);
+    }
+
+    // Troca os painéis internos (Para você / Em alta / Pessoas, Publicações / Respostas)
+    function trocarPainel(grupo, idPainel, botao) {
+      const pai = botao.closest('main');
+      pai.querySelectorAll('.painel').forEach(p => p.classList.remove('active'));
+      botao.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      document.getElementById(idPainel).classList.add('active');
+      botao.classList.add('active');
+    }
+
+    // ===== POSTS DE CADA FÓRUM =====
+    // A chave é o título do card (exatamente igual ao <h3>).
+    // Para adicionar um post, basta incluir mais um objeto na lista do fórum.
+    const postsPorForum = {
+      "Jogos de Terror": [
+        { autor: "FoxyFan", tempo: "há 3 horas", titulo: "Qual jogo de terror tem a melhor lore?", texto: "Estou procurando jogos com histórias cheias de mistérios e teorias. FNAF já zerei, quero algo novo.", comentarios: 87, votos: 312 },
+        { autor: "SilentHillBR", tempo: "há 1 dia", titulo: "O remake de Silent Hill 2 vale a pena pra quem nunca jogou o original?", texto: "Nunca joguei o clássico e fiquei curioso. Dá pra entender a história sem ter jogado o primeiro?", comentarios: 54, votos: 198 }
+      ],
+      "Sonic": [
+        { autor: "SpeedFan", tempo: "há 5 horas", titulo: "Qual o melhor Sonic 3D?", texto: "Sonic Adventure 2, Generations ou Frontiers? Quero saber qual vale mais a pena jogar hoje.", comentarios: 63, votos: 240 },
+        { autor: "ShadowMain", tempo: "há 2 dias", titulo: "O Shadow merece um jogo próprio de novo?", texto: "Depois dos filmes ele ficou muito popular. Vocês jogariam um jogo só dele?", comentarios: 41, votos: 156 }
+      ],
+      "Desenhos": [
+        { autor: "MysteryShack", tempo: "há 4 horas", titulo: "Gravity Falls envelheceu bem?", texto: "Reassisti tudo esse mês e achei ainda melhor do que lembrava. Alguém mais sente isso?", comentarios: 72, votos: 289 },
+        { autor: "FinnHumano", tempo: "há 1 dia", titulo: "Desenhos antigos que ninguém lembra", texto: "Comenta um desenho que você assistia criança e que parece que só você lembra que existiu.", comentarios: 130, votos: 401 }
+      ],
+      "Dinossauros": [
+        { autor: "RaptorLover", tempo: "há 2 horas", titulo: "T-Rex ou Espinossauro: quem era maior?", texto: "Vejo muita discussão sobre isso. O que os estudos mais recentes dizem sobre o tamanho dos dois?", comentarios: 95, votos: 275 },
+        { autor: "PaleoNerd", tempo: "há 3 dias", titulo: "Dinossauros brasileiros que vocês conhecem", texto: "O Brasil tem vários fósseis importantes. Quais espécies daqui vocês acham mais interessantes?", comentarios: 38, votos: 142 }
+      ],
+      "Busologia": [
+        { autor: "BusaoFan", tempo: "há 6 horas", titulo: "Olha esse ônibus antigo que achei", texto: "Encontrei um ônibus antigo parado numa garagem aqui da cidade. Alguém sabe identificar a carroceria?", comentarios: 29, votos: 117 },
+        { autor: "MotoristaDeBus", tempo: "há 1 dia", titulo: "Paradiso ou Apache: qual carroceria vocês preferem?", texto: "Uma pra rodoviário, outra pra urbano, mas qual tem o visual mais bonito na opinião de vocês?", comentarios: 44, votos: 133 }
+      ],
+      "Biologia Marinha": [
+        { autor: "OceanoAzul", tempo: "há 3 horas", titulo: "Vocês sabiam que o polvo tem três corações?", texto: "Dois bombeiam sangue para as brânquias e um para o resto do corpo. Qual o fato marinho mais estranho que vocês conhecem?", comentarios: 66, votos: 354 },
+        { autor: "MergulhoBR", tempo: "há 2 dias", titulo: "Melhores lugares pra mergulhar no Brasil", texto: "Quero conhecer recifes e vida marinha de perto. Fernando de Noronha é o único lugar bom ou tem outras opções?", comentarios: 47, votos: 168 }
+      ],
+      "Analog Horror": [
+        { autor: "VHSPerdido", tempo: "há 2 horas", titulo: "Por onde começar no analog horror?", texto: "Ouvi falar de Local 58 e The Mandela Catalogue. Qual série vocês recomendam pra quem nunca assistiu?", comentarios: 58, votos: 221 },
+        { autor: "SinalFraco", tempo: "há 1 dia", titulo: "Por que fitas VHS dão tanto medo?", texto: "A imagem chiada, o som abafado... O que vocês acham que deixa esse estilo tão perturbador?", comentarios: 34, votos: 147 }
+      ],
+      "Cultura Pop": [
+        { autor: "MaratonaSeries", tempo: "há 4 horas", titulo: "Qual série vocês estão assistindo agora?", texto: "Terminei a minha última e estou sem nada. Me recomendem algo que prende do primeiro episódio.", comentarios: 112, votos: 260 },
+        { autor: "CinefiloBR", tempo: "há 2 dias", titulo: "Filme que todo mundo ama mas você não gostou", texto: "Pode falar sem medo, aqui ninguém julga (muito).", comentarios: 189, votos: 433 }
+      ],
+      "Cultura Geek": [
+        { autor: "MestreDoRPG", tempo: "há 5 horas", titulo: "Procurando grupo de RPG de mesa", texto: "Alguém joga D&D ou Ordem Paranormal online? Estou montando uma mesa para iniciantes.", comentarios: 40, votos: 121 },
+        { autor: "OtakuSP", tempo: "há 1 dia", titulo: "Anime pra quem nunca assistiu anime", texto: "Meu amigo quer começar. Qual vocês indicariam pra ele não desistir no primeiro episódio?", comentarios: 97, votos: 302 }
+      ],
+      "Tecnologia e Mecânica": [
+        { autor: "MonteSeuPC", tempo: "há 3 horas", titulo: "Primeiro PC gamer: o que priorizar?", texto: "Tenho orçamento limitado. Vale mais investir na placa de vídeo ou no processador?", comentarios: 76, votos: 210 },
+        { autor: "ArduinoMaker", tempo: "há 2 dias", titulo: "Projetos simples com Arduino", texto: "Comprei um kit e não sei por onde começar. Quais projetos vocês fizeram primeiro?", comentarios: 31, votos: 98 }
+      ],
+      "Humanas e Registros Históricos": [
+        { autor: "Historiador01", tempo: "há 6 horas", titulo: "Qual período da história você gostaria de visitar?", texto: "Se pudesse passar um dia em qualquer época, qual escolheria e por quê?", comentarios: 83, votos: 245 },
+        { autor: "FilosofiaDeBar", tempo: "há 3 dias", titulo: "Livro de filosofia para iniciantes", texto: "Quero começar a ler filosofia mas tudo parece muito difícil. Alguma recomendação acessível?", comentarios: 52, votos: 176 }
+      ],
+      "Artes": [
+        { autor: "PincelSolto", tempo: "há 2 horas", titulo: "Van Gogh é superestimado?", texto: "A Noite Estrelada é linda, mas vocês acham que a fama dele vem mais da história de vida do que da técnica?", comentarios: 104, votos: 287 },
+        { autor: "DesenhistaIniciante", tempo: "há 1 dia", titulo: "Como vocês treinam desenho todo dia?", texto: "Quero criar o hábito mas sempre desisto depois de uma semana. Dicas?", comentarios: 45, votos: 139 }
+      ],
+      "Idiomas e Cultura": [
+        { autor: "Nihongo", tempo: "há 4 horas", titulo: "Aprender japonês sozinho é possível?", texto: "Hiragana, katakana e ainda os kanji... Alguém aqui aprendeu sem curso?", comentarios: 61, votos: 190 },
+        { autor: "Mochileiro", tempo: "há 2 dias", titulo: "Costume de outro país que te surpreendeu", texto: "Viajou ou conheceu alguém de fora? Conta um costume que você achou diferente.", comentarios: 78, votos: 224 }
+      ],
+      "Culinária": [
+        { autor: "ChefDeCasa", tempo: "há 3 horas", titulo: "Receita fácil para impressionar visitas", texto: "Vou receber amigos no fim de semana e não sei cozinhar muito bem. O que faço?", comentarios: 69, votos: 185 },
+        { autor: "PaoDeQueijo", tempo: "há 1 dia", titulo: "Pão de queijo: polvilho doce ou azedo?", texto: "Aqui em casa tem briga toda vez. Qual vocês usam?", comentarios: 120, votos: 340 }
+      ],
+      "Números & Matemática": [
+        { autor: "Pitagoras", tempo: "há 5 horas", titulo: "0,999... é igual a 1?", texto: "Meu professor disse que sim e eu não consigo aceitar. Alguém explica de um jeito simples?", comentarios: 143, votos: 398 },
+        { autor: "LogicaPura", tempo: "há 2 dias", titulo: "O problema de Monty Hall me quebrou", texto: "Por que trocar de porta aumenta a chance de ganhar? Parece que deveria ser 50/50.", comentarios: 88, votos: 256 }
+      ],
+      "Colecionáveis": [
+        { autor: "HotWheelsBR", tempo: "há 2 horas", titulo: "Minha coleção de Hot Wheels passou de 300!", texto: "Comecei com uns carrinhos de criança e não parei mais. Qual a coleção de vocês?", comentarios: 37, votos: 164 },
+        { autor: "TazoMaster", tempo: "há 3 dias", titulo: "Alguém ainda guarda tazos?", texto: "Achei uma caixa cheia aqui em casa. Isso vale alguma coisa hoje?", comentarios: 59, votos: 201 }
+      ],
+      "Astronomia": [
+        { autor: "OlhaOCeu", tempo: "há 4 horas", titulo: "Dá pra ver planetas sem telescópio?", texto: "Vi um ponto muito brilhante no céu ontem e me disseram que era um planeta. Como identificar?", comentarios: 48, votos: 177 },
+        { autor: "PlutaoVive", tempo: "há 1 dia", titulo: "Plutão deveria voltar a ser planeta?", texto: "Sei que ele foi reclassificado como planeta-anão. Vocês concordam com essa decisão?", comentarios: 91, votos: 263 }
+      ],
+      "Carros": [
+        { autor: "Opaleiro", tempo: "há 3 horas", titulo: "Carro antigo que vocês sonham em ter", texto: "O meu é um Opala. Qual clássico nacional vocês teriam na garagem?", comentarios: 74, votos: 229 },
+        { autor: "FuscaAzul", tempo: "há 2 dias", titulo: "Vale a pena restaurar um Fusca?", texto: "Achei um parado há anos, bem barato. Alguém aqui já restaurou e pode contar como foi?", comentarios: 50, votos: 144 }
+      ],
+      "Lojas & Supermercados": [
+        { autor: "Nostalgia90", tempo: "há 5 horas", titulo: "Lojas que fecharam e deixaram saudade", texto: "Alguém lembra do Mappin? Quais lojas antigas da sua cidade você sente falta?", comentarios: 67, votos: 198 },
+        { autor: "CarrinhoCheio", tempo: "há 1 dia", titulo: "Produto que sumiu do mercado e você quer de volta", texto: "Aquele salgadinho ou refrigerante que nunca mais achou. Comenta o seu!", comentarios: 154, votos: 376 }
+      ],
+      "Animais": [
+        { autor: "GatoPreto", tempo: "há 2 horas", titulo: "Por que gatos derrubam coisas da mesa?", texto: "O meu olha pra mim e empurra o copo devagar. Alguém tem uma explicação?", comentarios: 102, votos: 420 },
+        { autor: "AdoteUmPet", tempo: "há 2 dias", titulo: "Mostrem seus pets adotados!", texto: "Adotei uma vira-lata mês passado e ela mudou minha vida. Contem a história dos seus.", comentarios: 86, votos: 315 }
+      ],
+      "Minions": [
+        { autor: "BananaLover", tempo: "há 2 horas", titulo: "Qual o Minion favorito de vocês?", texto: "O meu sempre vai ser o Bob com o ursinho dele. E o de vocês?", comentarios: 58, votos: 230 },
+        { autor: "GruFan", tempo: "há 1 dia", titulo: "Meu Malvado Favorito ou Minions: qual filme é melhor?", texto: "Reassisti todos no fim de semana e fiquei em dúvida. Qual vocês preferem?", comentarios: 41, votos: 147 }
+      ],
+      "Futebol": [
+        { autor: "Resenha10", tempo: "há 3 horas", titulo: "Quem vai ser campeão do Brasileirão?", texto: "A tabela está apertada. Qual o palpite de vocês para o título?", comentarios: 210, votos: 389 },
+        { autor: "CamisaDez", tempo: "há 2 dias", titulo: "Melhor jogador brasileiro que você viu jogar", texto: "Sem discussão de época: qual jogador mais te impressionou assistindo?", comentarios: 175, votos: 352 }
+      ],
+      "Jogos Diversos": [
+        { autor: "GamerCasual", tempo: "há 4 horas", titulo: "O que vocês estão jogando agora?", texto: "Terminei meu último jogo e estou sem ideia. Me contem o que estão jogando.", comentarios: 96, votos: 214 },
+        { autor: "ControleQuebrado", tempo: "há 1 dia", titulo: "Jogo que você largou no meio e nunca terminou", texto: "Tenho uma lista enorme. Qual é o seu?", comentarios: 88, votos: 199 }
+      ],
+      "Jogos Indie": [
+        { autor: "PixelArt", tempo: "há 2 horas", titulo: "Indie que merecia mais reconhecimento", texto: "Hollow Knight, Celeste e Undertale todo mundo conhece. Qual indie pouco falado vocês recomendam?", comentarios: 64, votos: 241 },
+        { autor: "DevSolo", tempo: "há 3 dias", titulo: "Alguém aqui já tentou fazer um jogo sozinho?", texto: "Estou começando a programar meu primeiro jogo. Quais foram as maiores dificuldades de vocês?", comentarios: 39, votos: 128 }
+      ],
+      "Minecraft": [
+        { autor: "Construtor", tempo: "há 5 horas", titulo: "Java ou Bedrock: qual vocês jogam?", texto: "Estou pensando em mudar de versão. Quais as vantagens de cada uma?", comentarios: 102, votos: 276 },
+        { autor: "CreeperBR", tempo: "há 1 dia", titulo: "Mostrem a melhor construção de vocês", texto: "Acabei de terminar um castelo no survival depois de meses. Quero ver as de vocês!", comentarios: 73, votos: 310 }
+      ],
+      "Aviação": [
+        { autor: "Spotter", tempo: "há 3 horas", titulo: "Melhor aeroporto do Brasil para fotografar aviões", texto: "Quero começar a fazer spotting. Onde vocês recomendam ir?", comentarios: 34, votos: 121 },
+        { autor: "PilotoDeSofa", tempo: "há 2 dias", titulo: "Como perder o medo de avião?", texto: "Vou viajar pela primeira vez e estou nervoso. Quem já teve medo e superou?", comentarios: 67, votos: 188 }
+      ],
+      "K-pop": [
+        { autor: "StanForever", tempo: "há 1 hora", titulo: "Qual grupo te fez entrar no K-pop?", texto: "O meu foi BTS, mas hoje escuto de tudo. E vocês, começaram por qual?", comentarios: 143, votos: 402 },
+        { autor: "DancePractice", tempo: "há 1 dia", titulo: "Coreografia mais difícil que vocês já tentaram aprender", texto: "Estou tentando aprender uma do Stray Kids e meu joelho já desistiu.", comentarios: 59, votos: 233 }
+      ],
+      "Doramas": [
+        { autor: "OppaLover", tempo: "há 2 horas", titulo: "Dorama para quem nunca assistiu", texto: "Uma amiga quer começar. Pensei em Pousando no Amor, mas aceito sugestões.", comentarios: 81, votos: 265 },
+        { autor: "MaratonaK", tempo: "há 3 dias", titulo: "Final de dorama que te deixou com raiva", texto: "Tem final que eu ainda não superei. Contem os de vocês (sem spoiler pesado!).", comentarios: 94, votos: 287 }
+      ],
+      "Roblox": [
+        { autor: "Robloxiano", tempo: "há 4 horas", titulo: "Jogos de Roblox que valem a pena", texto: "Já cansei de Brookhaven. Qual jogo vocês estão jogando agora?", comentarios: 118, votos: 297 },
+        { autor: "DevRoblox", tempo: "há 2 dias", titulo: "Alguém aqui cria jogos no Roblox Studio?", texto: "Quero aprender a programar em Lua para fazer meu próprio jogo. Por onde começo?", comentarios: 46, votos: 152 }
+      ]
+    };
+
+    // Endereço do server.js (precisa estar rodando: node server.js)
+    const API = 'http://localhost:3000';
+
+    let forumAtual = '';
+
+    // Evita que alguém escreva HTML/JavaScript num post e ele seja executado na página
+    function escaparHTML(texto) {
+      const div = document.createElement('div');
+      div.textContent = texto;
+      return div.innerHTML;
+    }
+
+    // Transforma a data do banco em "há 5 min", "há 2 horas", etc.
+    function tempoDesde(data) {
+      const segundos = Math.floor((Date.now() - new Date(data)) / 1000);
+      if (segundos < 60) return 'agora mesmo';
+      const minutos = Math.floor(segundos / 60);
+      if (minutos < 60) return 'há ' + minutos + ' min';
+      const horas = Math.floor(minutos / 60);
+      if (horas < 24) return 'há ' + horas + (horas === 1 ? ' hora' : ' horas');
+      const dias = Math.floor(horas / 24);
+      return 'há ' + dias + (dias === 1 ? ' dia' : ' dias');
+    }
+
+    function htmlDoPost(post) {
+      return `
+        <div class="post-card">
+          <div class="post-header"><span>u/${escaparHTML(post.autor)}</span> • ${escaparHTML(post.tempo)}</div>
+          <h2 class="post-title">${escaparHTML(post.titulo)}</h2>
+          <p class="post-content">${escaparHTML(post.texto)}</p>
+          <div class="post-footer">
+            <span>💬 ${post.comentarios} Comentários</span>
+            <span>⬆ ${post.votos} Votos</span>
+          </div>
+        </div>`;
+    }
+
+    async function mostrarPosts(titulo) {
+      const lista = document.getElementById('forum-posts');
+      const fixos = postsPorForum[titulo] || [];
+
+      // 1) Mostra na hora os posts de exemplo
+      lista.innerHTML = fixos.map(htmlDoPost).join('');
+
+      // 2) Busca no banco os posts que os usuários criaram e coloca em cima
+      try {
+        const resposta = await fetch(API + '/api/postagens?categoria=' + encodeURIComponent(titulo));
+        if (!resposta.ok) throw new Error();
+        const doBanco = await resposta.json();
+
+        // Se o usuário trocou de fórum enquanto carregava, não mistura
+        if (titulo !== forumAtual) return;
+
+        const convertidos = doBanco.map(p => ({
+          autor: p.nickname || 'anônimo',
+          tempo: tempoDesde(p.data_postagem),
+          titulo: p.titulo_post,
+          texto: p.conteudo_post,
+          comentarios: 0,
+          votos: 0
+        }));
+
+        lista.innerHTML = convertidos.concat(fixos).map(htmlDoPost).join('');
+      } catch (erro) {
+        console.warn('Não foi possível buscar posts do servidor. Ele está rodando?');
+      }
+
+      if (lista.innerHTML.trim() === '') {
+        lista.innerHTML = `
+          <div class="post-card forum-vazio">
+            <h2>Nenhuma postagem ainda</h2>
+            <p>Seja o primeiro a publicar neste fórum!</p>
+          </div>`;
+      }
+    }
+
+    // ================= NOVA POSTAGEM =================
+    function usuarioLogado() {
+      try {
+        return JSON.parse(localStorage.getItem('usuarioLogado'));
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function abrirFormPost() {
+      const usuario = usuarioLogado();
+
+      if (!usuario || !usuario.id) {
+        if (confirm('Você precisa estar logado para postar. Ir para o login?')) {
+          window.location.href = 'login.html';
+        }
+        return;
+      }
+
+      document.getElementById('modal-titulo').textContent = 'Nova postagem em r/' + forumAtual.replace(/[^A-Za-zÀ-ÿ0-9]/g, '');
+      document.getElementById('modal-autor').textContent = 'Postando como u/' + usuario.nickname;
+      document.getElementById('post-titulo').value = '';
+      document.getElementById('post-conteudo').value = '';
+      document.getElementById('modal-erro').style.display = 'none';
+      document.getElementById('modal-post').classList.add('aberto');
+      document.getElementById('post-titulo').focus();
+    }
+
+    function fecharFormPost() {
+      document.getElementById('modal-post').classList.remove('aberto');
+    }
+
+    function mostrarErroPost(mensagem) {
+      const erro = document.getElementById('modal-erro');
+      erro.textContent = mensagem;
+      erro.style.display = 'block';
+    }
+
+    async function publicarPost() {
+      const usuario = usuarioLogado();
+      const titulo = document.getElementById('post-titulo').value.trim();
+      const conteudo = document.getElementById('post-conteudo').value.trim();
+      const botao = document.getElementById('btn-publicar');
+
+      if (titulo === '' || conteudo === '') {
+        mostrarErroPost('Preencha o título e o conteúdo.');
+        return;
+      }
+
+      botao.disabled = true;
+      botao.textContent = 'Publicando...';
+
+      try {
+        const resposta = await fetch(API + '/api/postagens', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id_usuario: usuario.id,
+            titulo: titulo,
+            conteudo: conteudo,
+            categoria: forumAtual
+          })
+        });
+
+        const dados = await resposta.json();
+        if (!resposta.ok) throw new Error(dados.erro || 'Erro ao publicar.');
+
+        fecharFormPost();
+        mostrarPosts(forumAtual); // recarrega a lista já com o post novo
+      } catch (erro) {
+        mostrarErroPost(erro.message === 'Failed to fetch'
+          ? 'Servidor desligado. Rode "node server.js" no terminal.'
+          : erro.message);
+      } finally {
+        botao.disabled = false;
+        botao.textContent = 'Publicar';
+      }
+    }
+
+    // Abre a página do fórum usando os dados do próprio card clicado
+    function abrirForum(link) {
+      const titulo = link.querySelector('h3').textContent;
+      const descricao = link.querySelector('p').textContent;
+      const imagem = link.querySelector('img').src;
+
+      // "Lojas & Supermercados" vira "r/LojasSupermercados"
+      const nomeComunidade = titulo.replace(/[^A-Za-zÀ-ÿ0-9]/g, '');
+
+      document.getElementById('forum-banner').style.backgroundImage = 'url("' + imagem + '")';
+      document.getElementById('forum-icone').src = imagem;
+      document.getElementById('forum-titulo').textContent = 'r/' + nomeComunidade;
+      document.getElementById('forum-descricao').textContent = descricao;
+      document.title = titulo + ' - Penguinismo';
+      forumAtual = titulo;
+      mostrarPosts(titulo);
+
+      mudarAba('aba-forum');
+    }
+
+    function voltarHome() {
+      document.title = 'Penguinismo';
+      mudarAba('aba-home');
+    }
+
+    // Abre um fórum pelo nome (usado no Explorar)
+    function abrirForumPorNome(nome) {
+      const card = [...document.querySelectorAll('.card-link')]
+        .find(c => c.querySelector('h3').textContent === nome);
+      if (card) abrirForum(card);
+    }
+
+    // ================= EXPLORAR =================
+    function pesquisarExplorar(texto) {
+      const termo = texto.toLowerCase();
+      document.querySelectorAll('#aba-explorar .exp-principal .exp-post, #aba-explorar .exp-principal .trend, #painel-pessoas .pessoa')
+        .forEach(item => {
+          item.style.display = item.textContent.toLowerCase().includes(termo) ? '' : 'none';
+        });
+    }
+
+    function seguir(botao) {
+      const seguindo = botao.classList.toggle('seguindo');
+      botao.textContent = seguindo ? 'Seguindo' : 'Seguir';
+    }
+
+    // ================= BATE-PAPO =================
+    const conversas = {
+      FoxyFan: {
+        hora: "10:42",
+        previa: "você viu aquela teoria nova?",
+        mensagens: [
+          { de: "FoxyFan", texto: "Você viu aquela teoria nova sobre FNAF?", hora: "10:40" },
+          { de: "eu", texto: "VI KKKKKKKK. Eu fiquei pensando nisso por horas.", hora: "10:41" },
+          { de: "FoxyFan", texto: "KKKKKKK eu também. Essa comunidade não deixa ninguém em paz.", hora: "10:42" }
+        ]
+      },
+      RaptorLover: {
+        hora: "09:18",
+        previa: "KKKKKKK eu também achei",
+        mensagens: [
+          { de: "eu", texto: "Viu o post sobre o Espinossauro? Achei muito exagerado.", hora: "09:15" },
+          { de: "RaptorLover", texto: "KKKKKKK eu também achei", hora: "09:18" }
+        ]
+      },
+      SpeedFan: {
+        hora: "ontem",
+        previa: "você já jogou esse?",
+        mensagens: [
+          { de: "SpeedFan", texto: "Comecei Sonic Frontiers ontem.", hora: "ontem" },
+          { de: "SpeedFan", texto: "você já jogou esse?", hora: "ontem" }
+        ]
+      },
+      BusaoFan: {
+        hora: "ontem",
+        previa: "olha esse ônibus antigo",
+        mensagens: [
+          { de: "BusaoFan", texto: "olha esse ônibus antigo", hora: "ontem" }
+        ]
+      }
+    };
+
+    let conversaAtual = "FoxyFan";
+
+    function desenharConversas(filtro = "") {
+      const lista = document.getElementById('lista-conversas');
+      lista.innerHTML = '';
+
+      Object.keys(conversas).forEach(nome => {
+        if (!nome.toLowerCase().includes(filtro.toLowerCase())) return;
+        const c = conversas[nome];
+
+        const item = document.createElement('div');
+        item.className = 'conversa' + (nome === conversaAtual ? ' active' : '');
+        item.onclick = () => abrirConversa(nome);
+
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar';
+        avatar.textContent = nome[0].toUpperCase();
+
+        const info = document.createElement('div');
+        info.className = 'conversa-info';
+        const nomeEl = document.createElement('strong');
+        nomeEl.textContent = nome;
+        const previa = document.createElement('p');
+        previa.textContent = c.previa;
+        info.append(nomeEl, previa);
+
+        const hora = document.createElement('small');
+        hora.textContent = c.hora;
+
+        item.append(avatar, info, hora);
+        lista.appendChild(item);
+      });
+    }
+
+    function abrirConversa(nome) {
+      conversaAtual = nome;
+      document.getElementById('chat-nome').textContent = nome;
+      document.getElementById('chat-avatar').textContent = nome[0].toUpperCase();
+      desenharConversas();
+      desenharMensagens();
+    }
+
+    function desenharMensagens() {
+      const caixa = document.getElementById('chat-mensagens');
+      caixa.innerHTML = '';
+
+      conversas[conversaAtual].mensagens.forEach(m => {
+        const balao = document.createElement('div');
+        balao.className = 'msg' + (m.de === 'eu' ? ' minha' : '');
+
+        if (m.de !== 'eu') {
+          const autor = document.createElement('div');
+          autor.className = 'msg-autor';
+          autor.textContent = m.de;
+          balao.appendChild(autor);
+        }
+
+        const texto = document.createElement('div');
+        texto.textContent = m.texto; // textContent impede que alguém injete HTML pela mensagem
+        balao.appendChild(texto);
+
+        const hora = document.createElement('div');
+        hora.className = 'msg-hora';
+        hora.textContent = m.hora;
+        balao.appendChild(hora);
+
+        caixa.appendChild(balao);
+      });
+
+      caixa.scrollTop = caixa.scrollHeight;
+    }
+
+    function enviarMensagem() {
+      const campo = document.getElementById('campo-mensagem');
+      const texto = campo.value.trim();
+      if (texto === '') return;
+
+      const agora = new Date();
+      const hora = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
+
+      const c = conversas[conversaAtual];
+      c.mensagens.push({ de: 'eu', texto: texto, hora: hora });
+      c.previa = texto;
+      c.hora = hora;
+
+      campo.value = '';
+      desenharConversas();
+      desenharMensagens();
+    }
+
+    function filtrarConversas(texto) {
+      desenharConversas(texto);
+    }
+
+    function novaConversa() {
+      const nome = prompt('Com quem você quer conversar? (nome de usuário)');
+      if (!nome || nome.trim() === '') return;
+      const limpo = nome.trim();
+
+      if (!conversas[limpo]) {
+        conversas[limpo] = { hora: '', previa: 'Nova conversa', mensagens: [] };
+      }
+      abrirConversa(limpo);
+    }
+
+    // ================= PERFIL =================
+    function curtir(botao) {
+      const numero = botao.querySelector('span');
+      const curtido = botao.classList.toggle('curtido');
+      let valor = parseInt(numero.textContent);
+      numero.textContent = curtido ? valor + 1 : valor - 1;
+      botao.firstChild.textContent = curtido ? '♥ ' : '♡ ';
+    }
+
+    function editarPerfil() {
+      const bio = document.getElementById('perfil-bio');
+      const nova = prompt('Escreva sua nova bio:', bio.textContent);
+      if (nova !== null && nova.trim() !== '') {
+        bio.textContent = nova.trim();
+      }
+    }
+
+    // Desenha o bate-papo quando a página carrega
+    desenharConversas();
+    desenharMensagens();
+  </script>
 </body>
-
 </html>
+
